@@ -28,6 +28,7 @@ public class Main{
         // Le fichier créé va être "h2database.mv.db" dans le repertoire de l'application Java
         try (Connection conn = DriverManager.getConnection(connUrl, username,password))
         {
+
             // EXERCICE 1
             Statement stat = conn.createStatement();
             stat.execute("CREATE ALIAS GAUSS FOR \"Main.getGaussiennne\""); 
@@ -65,7 +66,6 @@ public class Main{
             e.printStackTrace(System.err);
         }
 
-        // NE PAS TOUCHER
         File file = new File("h2database.mv.db");
         file.delete();
     }
@@ -101,7 +101,8 @@ public class Main{
 
     public static ResultSet getGaussiennne(Connection conn, Integer size) throws SQLException{
         SimpleResultSet rs = new SimpleResultSet();
-        rs.addColumn("X", Types.INTEGER, 10, 0);
+        // CREATION DES TABLES SQL avec nom, type, et le reste pas important 
+        rs.addColumn("X", Types.INTEGER, 10, 0); 
         rs.addColumn("Y", Types.INTEGER, 10, 0); 
         rs.addColumn("valeur", Types.DOUBLE, 10, 0); 
         //String url = conn.getMetaData().getURL();
@@ -109,10 +110,11 @@ public class Main{
         // return rs;
         //}
         // Ajoute des lignes (rangees, occurrences de la table)
+
         for (int x = -size/2; x < size/2+1; x++) {
             for (int y = -size/2; y < size/2+1; y++) {
-                double v = size * Math.exp(-(x*x)-(y*y));
-                rs.addRow(x, y, v);
+                double v = size * Math.exp(-(x*x)-(y*y)); // fonction gaussienne
+                rs.addRow(x, y, v); // AJOUT D'UNE LIGNE A LA TABLE AVEC LES ATTRIBUTS EN PARAM
             }
         }
         return rs;
@@ -120,6 +122,7 @@ public class Main{
     
     public static ResultSet getRGB_Image(Connection conn, String path) throws SQLException, IOException{
         SimpleResultSet rs = new SimpleResultSet();
+        // AJOUT DES TABLES SQL 
         rs.addColumn("X", Types.INTEGER, 10, 0);
         rs.addColumn("Y", Types.INTEGER, 10, 0); 
         rs.addColumn("R", Types.INTEGER, 10, 0);
@@ -140,8 +143,8 @@ public class Main{
                 // Components will be in the range of 0..255:
                 int blue = color & 0xff;
                 int green = (color & 0xff00) >> 8;
-                int red = (color & 0xff0000) >> 16;
-                rs.addRow(x, y, red, green, blue);
+                int red = (color & 0xff0000) >> 16; 
+                rs.addRow(x, y, red, green, blue);  // AJOUT D'UNE LIGNE A LA TABLE AVEC LES X,Y et R,G,B DE CHAQUE PX DE L'IMAGE
             }
         }
         return rs;
