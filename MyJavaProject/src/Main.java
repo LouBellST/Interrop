@@ -28,6 +28,8 @@ public class Main{
         // Le fichier créé va être "h2database.mv.db" dans le repertoire de l'application Java
         try (Connection conn = DriverManager.getConnection(connUrl, username,password))
         {
+
+            // EXERCICE 1
             Statement stat = conn.createStatement();
             stat.execute("CREATE ALIAS GAUSS FOR \"Main.getGaussiennne\""); 
             
@@ -49,7 +51,7 @@ public class Main{
             prep2.close(); 
 
 
-            // NOUVELLE FONCTION
+            // EXERCICE 2
             stat.execute("CREATE ALIAS RGBIMAGE FOR \"Main.getRGB_Image\""); 
             
             PreparedStatement rgbImage = conn.prepareStatement("SELECT * FROM RGBIMAGE(\'MyJavaProject/src/building.png\') ORDER BY X,Y");
@@ -63,6 +65,9 @@ public class Main{
         catch (Exception e){
             e.printStackTrace(System.err);
         }
+
+        File file = new File("h2database.mv.db");
+        file.delete();
     }
 
     /* 
